@@ -26,6 +26,7 @@ public class AuthService {
     private JwtProvider jwtProvider;
 
     public boolean isDuplicatedByUsername(String username) {
+
         return userMapper.findUserByUsername(username) != null;
     }
 
