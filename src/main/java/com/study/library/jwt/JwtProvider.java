@@ -62,15 +62,12 @@ public class JwtProvider {
     public Claims getClaims(String token) {
         Claims claims = null;
 
-        try {
             claims = Jwts.parserBuilder()
                     .setSigningKey(key)
                     .build()
                     .parseClaimsJws(token)
                     .getBody();
-        } catch (Exception e) {
-            log.error("JWT 인증 오류: {}", e.getMessage());
-        }
+
 
         return claims;
     }
@@ -84,5 +81,17 @@ public class JwtProvider {
         }
         PrincipalUser principalUser = user.toPrincipalUser();
         return new UsernamePasswordAuthenticationToken(principalUser, principalUser.getPassword(), principalUser.getAuthorities());
+    }
+
+    public String generateAuthMailToken(int userId, String toMailAddress) {
+
+        Date expireData = new Date(new Date().getTime() + (1000 * 60 * 5)); // 토근 유효 시간 5분
+        return Jwts.builder()
+                .claim("userId", userId)
+                .claim("toMailAddress", toMailAddress)
+                .setExpiration(expireData)
+                .signWith(key, SignatureAlgorithm.HS256)
+                .compact();
+
     }
 }
