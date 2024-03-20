@@ -6,7 +6,6 @@ import com.study.library.entity.User;
 import com.study.library.exception.SaveException;
 import com.study.library.jwt.JwtProvider;
 import com.study.library.repository.UserMapper;
-import org.aspectj.weaver.bcel.BcelAnnotation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -18,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class AuthService {
+
     @Autowired
     private UserMapper userMapper;
     @Autowired
@@ -26,7 +26,6 @@ public class AuthService {
     private JwtProvider jwtProvider;
 
     public boolean isDuplicatedByUsername(String username) {
-
         return userMapper.findUserByUsername(username) != null;
     }
 

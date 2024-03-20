@@ -12,7 +12,6 @@ import java.util.List;
 @Builder
 @Data
 public class PrincipalUser implements UserDetails {
-
     private int userId;
     private String username;
     private String name;

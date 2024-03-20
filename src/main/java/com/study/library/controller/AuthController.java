@@ -27,9 +27,7 @@ public class AuthController {
     @ValidAspect
     @PostMapping("/signup")
     public ResponseEntity<?> signup(@Valid @RequestBody SignupReqDto signupReqDto, BindingResult bindingResult) {
-
         authService.signup(signupReqDto);
-
         return ResponseEntity.created(null).body(true);
     }
 

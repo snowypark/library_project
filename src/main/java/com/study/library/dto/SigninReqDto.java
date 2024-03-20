@@ -7,5 +7,4 @@ import lombok.Data;
 public class SigninReqDto {
     private String username;
     private String password;
-
 }

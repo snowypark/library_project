@@ -2,9 +2,8 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
 <mapper namespace="com.study.library.repository.UserMapper">
-
-
     <resultMap id="RoleResultMap" type="com.study.library.entity.Role">
         <id property="roleId" column="role_id" />
         <result property="roleName" column="role_name" />
@@ -50,23 +49,23 @@
             resultMap="UserResultMap"
     >
         select
-        ut.user_id,
-        ut.username,
-        ut.password,
-        ut.name,
-        ut.email,
-        ut.create_date,
-        ut.update_date,
-        rrt.role_register_id,
-        rrt.role_id,
-        rt.role_name,
-        rt.role_name_kor
+            ut.user_id,
+            ut.username,
+            ut.password,
+            ut.name,
+            ut.email,
+            ut.create_date,
+            ut.update_date,
+            rrt.role_register_id,
+            rrt.role_id,
+            rt.role_name,
+            rt.role_name_kor
         from
-        user_tb ut
-        left outer join role_register_tb rrt on(rrt.user_id = ut.user_id)
-        left outer join role_tb rt on(rt.role_id = rrt.role_id)
+            user_tb ut
+            left outer join role_register_tb rrt on(rrt.user_id = ut.user_id)
+            left outer join role_tb rt on(rt.role_id = rrt.role_id)
         where
-        username = #{username}
+            username = #{username}
     </select>
 
 

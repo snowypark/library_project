@@ -12,14 +12,11 @@ import java.util.List;
 public class PermitAllFilter extends GenericFilter {
 
     @Override
-    public void doFilter(ServletRequest servletRequest,
-                         ServletResponse servletResponse,
-                         FilterChain filterChain) throws IOException, ServletException {
-
+    public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
 
-        List<String> antMatchers = List.of("/error","/server", "/auth");
+        List<String> antMatchers = List.of("/error", "/server", "/auth");
 
         String uri = request.getRequestURI();
         request.setAttribute("isPermitAll", false);
@@ -30,8 +27,6 @@ public class PermitAllFilter extends GenericFilter {
             }
         }
 
-        System.out.println(uri);
         filterChain.doFilter(request, response);
-
     }
 }

@@ -1,6 +1,5 @@
 package com.study.library.jwt;
 
-
 import com.study.library.entity.User;
 import com.study.library.repository.UserMapper;
 import com.study.library.security.PrincipalUser;
@@ -9,7 +8,6 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
-import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -19,23 +17,20 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
-import javax.swing.*;
 import java.security.Key;
 import java.util.Collection;
 import java.util.Date;
-import java.util.List;
-import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.CompletionStage;
 
-@Component
 @Slf4j
+@Component
 public class JwtProvider {
 
     private final Key key;
     private UserMapper userMapper;
 
-    public JwtProvider(@Value("${jwt.secret}") String secret,
-                        @Autowired UserMapper userMapper) {
+    public JwtProvider(
+            @Value("${jwt.secret}") String secret,
+            @Autowired UserMapper userMapper) {
         key = Keys.hmacShaKeyFor(Decoders.BASE64.decode(secret));
         this.userMapper = userMapper;
     }
@@ -58,7 +53,7 @@ public class JwtProvider {
     }
 
     public String removeBearer(String token) {
-        if(!StringUtils.hasText(token)){
+        if(!StringUtils.hasText(token)) {
             return null;
         }
         return token.substring("Bearer ".length());
@@ -73,23 +68,21 @@ public class JwtProvider {
                     .build()
                     .parseClaimsJws(token)
                     .getBody();
-        }catch (Exception e) {
+        } catch (Exception e) {
             log.error("JWT 인증 오류: {}", e.getMessage());
         }
 
         return claims;
     }
 
-    public Authentication getAuthentiCation(Claims claims) {
-        String username = (String) claims.get("username").toString();
+    public Authentication getAuthentication(Claims claims) {
+        String username = claims.get("username").toString();
         User user = userMapper.findUserByUsername(username);
-
         if(user == null) {
-            // 토큰은 유효하지만 DB에서 user 정보가 삭제되었을 경우
+            // 토큰은 유효하지만 DB에서 USER정보가 삭제되었을 경우
             return null;
         }
         PrincipalUser principalUser = user.toPrincipalUser();
         return new UsernamePasswordAuthenticationToken(principalUser, principalUser.getPassword(), principalUser.getAuthorities());
-
     }
 }
