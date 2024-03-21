@@ -3,6 +3,8 @@ package com.study.library.config;
 import com.study.library.security.exception.AuthEntryPoint;
 import com.study.library.security.filter.JwtAuthenticationFilter;
 import com.study.library.security.filter.PermitAllFilter;
+import com.study.library.security.handler.OAuth2SuccessHandler;
+import com.study.library.service.OAuth2PrincipalUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -23,6 +25,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private JwtAuthenticationFilter jwtAuthenticationFilter;
     @Autowired
     private AuthEntryPoint authEntryPoint;
+    @Autowired
+    private OAuth2PrincipalUserService oAuth2PrincipalUserService;
+
+    @Autowired
+    private OAuth2SuccessHandler oAuth2SuccessHandler;
 
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
@@ -40,11 +47,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .permitAll()
                 .anyRequest()
                 .authenticated()
-                .and()
+                .and()    // jwt 로그인
                 .addFilterAfter(permitAllFilter, LogoutFilter.class)
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .exceptionHandling()
-                .authenticationEntryPoint(authEntryPoint);
+                .authenticationEntryPoint(authEntryPoint)
+                .and()  // google 로그인
+                .oauth2Login()
+                .successHandler(oAuth2SuccessHandler)
+                .userInfoEndpoint()     // OAuth2 유저
+                .userService(oAuth2PrincipalUserService);
 
     }
 }
