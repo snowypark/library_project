@@ -33,6 +33,14 @@ public class AccountService {
             throw new ValidException(Map.of("newPasswordCheck", "새로운 비밀번호가 서로 일치하지 않습니다. \n 다시 입력하세요."));
         }
 
+        if(passwordEncoder.matches(editPasswordReqDto.getNewPassword(), user.getPassword())) {
+            throw new ValidException(Map.of("newPassword", "동일한 비밀번호는 사용하실 수 없습니다. \n 다시 입력하세요."));
+
+        }
+
+        user.setPassword(passwordEncoder.encode(editPasswordReqDto.getNewPassword()));
+        userMapper.modifyPassword(user);
+
     }
 
 }
