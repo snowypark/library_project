@@ -89,7 +89,7 @@ public class AccountMailService {
 
     public Map<String, Object > authenticate(String token) {
 
-        Claims claims =  null;
+        Claims claims = null;
 
         Map<String, Object> resultMap = null;
 
@@ -101,23 +101,19 @@ public class AccountMailService {
             claims = jwtProvider.getClaims(token);
             int userId = Integer.parseInt(claims.get("userId").toString());
             RoleRegister roleRegister = userMapper.findRoleRegisterByUserIdAndRoleId(userId, 2);
-            if(roleRegister != null) {
-
+            if (roleRegister != null) {
                 resultMap = Map.of("status", true, "message", "이미 인증이 완료된 메일입니다.");
-            }else {
+            } else {
                 userMapper.saveRole(userId, 2);
                 resultMap = Map.of("status", true, "message", "인증 완료.");
             }
-
-
-        }catch (ExpiredJwtException e) {
+        } catch (ExpiredJwtException e) {
             resultMap = Map.of("status", false, "message", "인증 시간을 초과하였습니다.\n인증 메일을 다시 받으세요.");
-        }catch (JwtException e){
-            resultMap = Map.of("status", false, "message", "잘못된 접근입니다. \n인증 메일을 다시 받으세요.");
+        } catch (JwtException e) {
+            resultMap = Map.of("status", false, "message", "잘못된 접근입니다.\n인증 메일을 다시 받으세요.");
         }
 
-            return resultMap;
+        return resultMap;
     }
-
 }
 
