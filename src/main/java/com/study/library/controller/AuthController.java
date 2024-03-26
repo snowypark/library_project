@@ -26,6 +26,7 @@ public class AuthController {
     @Autowired
     private AuthService authService;
 
+
     @ValidAspect
     @PostMapping("/signup")
     public ResponseEntity<?> signup(@Valid @RequestBody SignupReqDto signupReqDto, BindingResult bindingResult) {
