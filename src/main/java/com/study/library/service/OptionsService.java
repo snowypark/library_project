@@ -20,7 +20,6 @@ public class OptionsService {
 
     public List<Category> getAllCategories() {
 
-
         return optionsMapper.getAllCategories();
     }
 

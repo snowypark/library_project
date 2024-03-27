@@ -1,6 +1,5 @@
 package com.study.library.controller.admin;
 
-import com.study.library.aop.annotation.ParamsPrintAspect;
 import com.study.library.aop.annotation.ValidAspect;
 import com.study.library.dto.RegisterBookReqDto;
 import com.study.library.dto.SearchBookReqDto;
@@ -28,13 +27,17 @@ public class AdminBookController {
 
         bookService.saveBook(registerBookReqDto);
 
-        return ResponseEntity.created(null).body(true);
+        return ResponseEntity.created(null).body(registerBookReqDto);
     }
 
-    @ParamsPrintAspect
     @GetMapping("/books")
     public ResponseEntity<?> searchBooks(SearchBookReqDto searchBookReqDto) {
-        return ResponseEntity.ok(null);
+        return ResponseEntity.ok(bookService.searchBooks(searchBookReqDto));
+    }
+
+    @GetMapping("/books/count")
+    public ResponseEntity<?> getCount(SearchBookReqDto searchBookReqDto ) {
+        return ResponseEntity.ok(bookService.getBookCount(searchBookReqDto));
     }
 
 
