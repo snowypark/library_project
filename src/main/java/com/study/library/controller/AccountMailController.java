@@ -12,7 +12,6 @@ import java.util.Map;
 @Controller
 @RequestMapping("/mail")
 public class AccountMailController {
-
     @Autowired
     private AccountMailService accountMailService;
 
